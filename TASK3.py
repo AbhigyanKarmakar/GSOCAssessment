@@ -205,15 +205,29 @@ model.compile(optimizer='adam',
 
 checkpoint = ModelCheckpoint("./best_model.hdf5", monitor='loss', verbose=1, mode='auto', save_freq=2)
 
-history = model.fit(train_images, train_labels, epochs=5, 
+history = model.fit(train_images, train_labels, epochs=1, 
                     validation_data=(test_images, test_labels))
 
-model.save("./savedmodel")
-
 test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+for i in range(10):
+    print('EPOCH SAVED')
 
-print("Test Loss : " , test_loss)
-print("Test Accuracy : " , test_acc)
+    model.save("./savedmodel")
 
-inferImageDir = ''
+    print('EPOCH LOAD')
+
+    model = models.load_model(savedModelDir)
+    model.compile(optimizer='adam',
+                  loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                  metrics=['accuracy'])
+
+    history = model.fit(train_images, train_labels, epochs=1, 
+                        validation_data=(test_images, test_labels))
+
+    test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+
+    print("Test Loss : " , test_loss)
+    print("Test Accuracy : " , test_acc)
+
+
 
