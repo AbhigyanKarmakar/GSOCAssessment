@@ -203,9 +203,9 @@ model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
-checkpoint = ModelCheckpoint("best_model.hdf5", monitor='loss', verbose=1, save_best_only=True, mode='auto', period=1)
+checkpoint = ModelCheckpoint("./best_model.hdf5", monitor='loss', verbose=1, mode='auto', save_freq=2)
 
-history = model.fit(train_images, train_labels, epochs=10, 
+history = model.fit(train_images, train_labels, epochs=5, 
                     validation_data=(test_images, test_labels))
 
 model.save("./savedmodel")
