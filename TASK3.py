@@ -171,12 +171,12 @@ test_labels=np.array(test_labels)/1.0
 traintestratio = 0.70
 
 cutindex = int(traintestratio*len(train_images))
-
+print ("CUT AT : ",cutindex)
 test_images=train_images[cutindex:len(train_images)]
 train_images=train_images[0:cutindex]
 
 test_labels=train_labels[cutindex:len(train_labels)]
-train_labels=train_labels[0:int(traintestratio*len(train_images))]
+train_labels=train_labels[0:cutindex]
 
 #print((train_images[0]).shape)
 #print(type(train_images))
@@ -187,21 +187,15 @@ print(len(test_labels))
 
 inputshape = (1024, 1024, 1)
 model = models.Sequential()
-model.add(layers.Conv2D(512, (8, 1), input_shape=inputshape))
-model.add(LeakyReLU(alpha=0.1))
+model.add(layers.Conv2D(64, (2, 2), activation='relu', input_shape=inputshape))
 model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(256, (8, 1), input_shape=inputshape))
-model.add(LeakyReLU(alpha=0.1))
+model.add(layers.Conv2D(64, (1, 1), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(64, (8, 1), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(32, (4, 1), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(32, (1, 1), activation='relu'))
+model.add(layers.Conv2D(16, (1, 1), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(16, (1, 1), activation='relu'))
 model.add(layers.Flatten())
-model.add(layers.Dense(8, activation='relu'))
+model.add(layers.Dense(16, activation='relu'))
 model.add(layers.Dense(2))
 model.summary()
 
